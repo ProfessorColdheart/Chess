@@ -1,5 +1,6 @@
 package com.game;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -16,6 +17,8 @@ public abstract class Figure {
     }
 
 //    public abstract List<Move> getPossibleMoves();
+
+   // public abstract List<Move> movesResultingFromBeingAFigure();
 
     @Override
     public String toString() {
@@ -34,6 +37,8 @@ public abstract class Figure {
         Figure figure = (Figure) o;
         return x == figure.x && y == figure.y;
     }
+
+    public abstract boolean ruleOfMovement(int i, int j);
 
     @Override
     public int hashCode() {

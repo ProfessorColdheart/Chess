@@ -1,5 +1,7 @@
 package com.gui;
 
+import com.game.Move;
+import com.game.algorithm.findingpossiblemoves.FindingPossibleMoves;
 import javafx.scene.layout.Pane;
 
 public class SlotViewManager extends Pane implements HoverListener {
@@ -23,6 +25,21 @@ public class SlotViewManager extends Pane implements HoverListener {
         SlotView lastHovered = hoverManager.getLastHovered();
         if (lastHovered != null) {
             lastHovered.brightOut();
+        }
+
+        if (actualHovered.getFigure() != null) {
+
+            System.out.println("name: " + actualHovered.getFigure().getName());
+            FindingPossibleMoves possibleMoves =
+                    new FindingPossibleMoves(actualHovered.x, actualHovered.y);
+            System.out.println(actualHovered.getFigure().getName());
+
+            for (Move movementPossibility : possibleMoves.find(actualHovered.getFigure())) {
+                hoverManager.findRectangleByCoordinates(
+                        movementPossibility.getX(), movementPossibility.getY())
+                        .brightIn();
+            }
+
         }
     }
 

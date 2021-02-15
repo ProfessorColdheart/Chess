@@ -27,7 +27,6 @@ public class Presenter {
         addAllSlots();
         setPiecesOnInitialPositions();
         prepareMouseListener(hoverManager);
-
     }
 
     private void addAllSlots() {
@@ -45,7 +44,6 @@ public class Presenter {
             slots[figure.getY()][figure.getX()].setFigure(figure);
         }
     }
-
 
     public void prepareMouseListener(HoverManager hoverManager) {
         scene.setOnMouseMoved(event -> {

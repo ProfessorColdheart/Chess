@@ -44,6 +44,8 @@ public class SlotView extends ImageView {
         return field;
     }
 
+    public Figure getFigure() {return figure;}
+
     public void brightIn() {
         field.brightIn();
     }
