@@ -1,13 +1,17 @@
-package com.game;
+package com.game.figures;
 
-import java.util.List;
-import java.util.Objects;
+import com.game.Coord;
+import com.game.Side;
+
+import java.util.*;
 
 
 public abstract class Figure {
     protected FigureType name;
     protected int x, y;
     protected Side side;
+    protected MovesFinder finder;
+    boolean firstMove = true;
 
     public Figure(FigureType name, int x, int y, Side side) {
         this.name = name;
@@ -16,12 +20,17 @@ public abstract class Figure {
         this.side = side;
     }
 
-//    public abstract List<Move> getPossibleMoves();
+    public abstract List<Coord> getPossibleMoves();
 
-   // public abstract List<Move> movesResultingFromBeingAFigure();
+    public void move(int x, int y) {
+        this.x = x;
+        this.y = y;
+        firstMove = false;
+    }
 
     @Override
     public String toString() {
+
         return "Figure{" +
                 "name='" + name + '\'' +
                 ", x=" + x +
@@ -38,8 +47,6 @@ public abstract class Figure {
         return x == figure.x && y == figure.y;
     }
 
-    public abstract boolean ruleOfMovement(int i, int j);
-
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
@@ -53,11 +60,23 @@ public abstract class Figure {
         return x;
     }
 
+    public Coord getCoord() {
+        return new Coord(x, y);
+    }
+
     public FigureType getName() {
         return name;
     }
 
     public Side getSide() {
         return side;
+    }
+
+    public void setMovesFinder(MovesFinder finder) {
+        this.finder = finder;
+    }
+
+    public boolean isFirstMove() {
+        return firstMove;
     }
 }

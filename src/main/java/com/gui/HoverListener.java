@@ -2,6 +2,6 @@ package com.gui;
 
 public interface HoverListener {
 
-    void reactToNewSlotHovered(HoverManager hoverManager);
-
+    void reactToNewSlotHovered(MouseManager mouseManager);
+    //void reactToNewSlotHovered(SlotView slotView);
 }
