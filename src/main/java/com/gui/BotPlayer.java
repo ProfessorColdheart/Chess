@@ -2,6 +2,7 @@ package com.gui;
 
 import com.game.ChessFacade;
 import com.game.Coord;
+import com.game.Move;
 
 public class BotPlayer extends Player {
     private ChessFacade chessFacade;
@@ -14,10 +15,8 @@ public class BotPlayer extends Player {
     @Override
     public void move() {
         mouseManager.setEnableClick(false);
-        Coord[] bestMove = chessFacade.generateBestMove();
-        mouseManager.reactToClickCoords(bestMove[0].getX(), bestMove[0].getY());
-        mouseManager.reactToClickCoords(bestMove[1].getX(), bestMove[1].getY());
-
-        //todo
+        Move move = chessFacade.generateBestMove();
+        mouseManager.reactToClickCoords(move.getFrom().getX(),move.getFrom().getY());
+        mouseManager.reactToClickCoords(move.getTo().getX(),move.getTo().getY());
     }
 }

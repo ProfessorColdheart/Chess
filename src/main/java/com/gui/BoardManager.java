@@ -2,6 +2,7 @@ package com.gui;
 
 import com.game.ChessFacade;
 import com.game.Coord;
+import com.game.Move;
 import com.game.figures.Figure;
 import javafx.scene.layout.Pane;
 
@@ -17,9 +18,14 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
     private Player[] players;
 
     public BoardManager(ChessFacade chessFacade) {
+        this.chessFacade = chessFacade;
         ViewsFactory factory = new ViewsFactory();
         slots = factory.prepareBoard();
-        this.chessFacade = chessFacade;
+    }
+
+    public void setPlayers(Player[] players) {
+        this.players = players;
+        actualPlayer = players[0];
     }
 
     public void startGame() {
@@ -46,6 +52,7 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
             }
         } else if (figureOnSlot.getSide().equals(chessFacade.actualPlayer())) {
             select(slotView);
+            return;
         } else if (selectedSlot != null) {
             attack(slotView);
         } else {
@@ -53,7 +60,7 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
             return;
         }
         //nastepny gracz
-        nextPlayer();
+
     }
 
     private void nextPlayer() {
@@ -68,11 +75,11 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
         int rowY = destination.getRowY();
         //czy figura na pewno moze sie tu ruszyc?
         System.out.println("czytam ruchy dla: " + figure);
-        if (chessFacade.getCorrectMovesFor(figure.getX(), figure.getY()).contains(new Coord(columnX, rowY))) {
 
+        if (canMoveTo(figure, new Coord(columnX, rowY))) {
             chessFacade.attack(figure, columnX, rowY);
             System.out.println("Atak na pole x= " + columnX + ", y = " + rowY);
-            selectedSlot.moveTo(destination);
+            selectedSlot.moveTo(destination, this);
             clearSelection();
             System.out.println(destination);
             System.out.println(chessFacade.getFigureOn(columnX,rowY));
@@ -89,15 +96,21 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
         int rowY = destination.getRowY();
         //czy figura na pewno moze sie tu ruszyc?
 
-        if (chessFacade.getCorrectMovesFor(figure.getX(), figure.getY()).contains(new Coord(columnX, rowY))) {
+        if (canMoveTo(figure, new Coord(columnX, rowY))) {
             chessFacade.move(figure, columnX, rowY);
             System.out.println("Ruch na pole x= " + columnX + ", y = " + rowY);
-            selectedSlot.moveTo(destination);
+            selectedSlot.moveTo(destination, this);
             clearSelection();
         } else {
             System.out.println("Ruch niemożliwy");
         }
 
+    }
+
+    private boolean canMoveTo(Figure figure, Coord coord) {
+        return chessFacade.getCorrectMovesFor(figure.getX(), figure.getY())
+                .stream()
+                .anyMatch(move -> move.getTo().equals(coord));
     }
 
     public void select(SlotView slotView) {
@@ -115,11 +128,12 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
         Figure selectedFigure = slotView.getFigure();
 
         System.out.println("name: " + selectedFigure.getName());
-        Collection<Coord> possibleCoords
+        Collection<Move> possibleCoords
                 = chessFacade.getCorrectMovesFor(selectedFigure.getX(), selectedFigure.getY());
 
-        for (Coord coord : possibleCoords) {
-            SlotView moveSlot = slots[coord.getY()][coord.getX()];
+        for (Move move : possibleCoords) {
+
+            SlotView moveSlot = slots[move.getTo().getY()][move.getTo().getX()];
             Figure figureOnMove = moveSlot.getFigure();
             ActionType action;
             if (figureOnMove != null && figureOnMove.getSide() != chessFacade.actualPlayer()) {
@@ -144,8 +158,8 @@ public class BoardManager extends Pane implements HoverListener, ClickListener {
         return slots;
     }
 
-    public void setPlayers(Player[] players) {
-        this.players = players;
-        actualPlayer = players[0];
+    public void triggerNextPlayer() {
+        nextPlayer();
+        actualPlayer.move();
     }
 }

@@ -1,9 +1,11 @@
 package com.game.figures;
 
 import com.game.Coord;
+import com.game.Move;
 import com.game.Side;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public abstract class Figure {
@@ -20,7 +22,15 @@ public abstract class Figure {
         this.side = side;
     }
 
-    public abstract List<Coord> getPossibleMoves();
+    public  List<Move> getPossibleMoves(){
+        return getPossibleMoveCoords().stream()
+                .map(coord -> new Move(new Coord(x, y), coord, finder.isAttack(coord)))
+                //.filter() // odrzuć ruch jeśli spowoduje szacha
+                .collect(Collectors.toList());
+    }
+    protected abstract List<Coord> getPossibleMoveCoords();
+
+
 
     public void move(int x, int y) {
         this.x = x;

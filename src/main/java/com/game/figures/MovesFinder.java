@@ -65,6 +65,10 @@ public class MovesFinder {
         return results;
     }
 
+    public boolean isAttack(Coord to) {
+        return gameState.getFigureOn(to.getX(), to.getY()) != null;
+    }
+
     public List<Coord> listSouthVerticalLine() {
         List<Coord> results = new ArrayList<>();
 

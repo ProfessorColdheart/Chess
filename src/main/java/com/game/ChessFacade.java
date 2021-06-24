@@ -20,7 +20,7 @@ public class ChessFacade {
     }
 
 
-    public Collection<Coord> getCorrectMovesFor(int x, int y) {
+    public Collection<Move> getCorrectMovesFor(int x, int y) {
         //znalezc figure kliknieta
         //sprawdzic jej ruchy, czy na pewno kazdy moze wykonać tzn.
         //odsiac nieporawne ruchy takie jak:
@@ -59,7 +59,7 @@ public class ChessFacade {
         move(attacker, x, y);
     }
 
-    public Coord[] generateBestMove() {
+    public Move generateBestMove() {
         return botLogic.generateBestMove();
     }
 

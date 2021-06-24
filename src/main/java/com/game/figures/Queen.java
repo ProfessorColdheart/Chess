@@ -12,7 +12,7 @@ public class Queen extends Figure {
     }
 
     @Override
-    public List<Coord> getPossibleMoves() {
+    public List<Coord> getPossibleMoveCoords() {
         List<Coord> resultList = new ArrayList<>();
         resultList.addAll(finder.listDiagonalLines());
         resultList.addAll(finder.listVerticalAndHorizontalLines());

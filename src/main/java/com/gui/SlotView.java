@@ -74,7 +74,7 @@ public class SlotView extends ImageView {
         return y;
     }
 
-    public void moveTo(SlotView destination) {
+    public void moveTo(SlotView destination, BoardManager boardManager) {
         Path path = new Path();
         path.getElements().add(new MoveTo(getTranslateX() + BoardManager.SIZE * 0.5, getTranslateY() + BoardManager.SIZE * 0.5));
 //        path.getElements().add(new LineTo(destination.getX(), destination.getY()));
@@ -88,6 +88,7 @@ public class SlotView extends ImageView {
         pathTransition.setOnFinished(event -> {
             destination.setFigure(figure);
             removeFigure();
+            boardManager.triggerNextPlayer();
         });
 
 

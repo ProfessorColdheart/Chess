@@ -2,6 +2,10 @@ package com.game;
 
 import com.game.figures.Figure;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class BotLogic {
     private GameState gameState;
 
@@ -9,15 +13,20 @@ public class BotLogic {
         this.gameState = gameState;
     }
 
-    public Coord[] generateBestMove() {
-        for (Figure figure : gameState.getActualPlayersFigures()) {
-            if (figure.getPossibleMoves().size() > 0) {
-                Coord moveFrom = figure.getCoord();
-                Coord moveTo = figure.getPossibleMoves().get(0);
+    public Move generateBestMove() {
 
-                return new Coord[]{moveFrom, moveTo};
-            }
+        List<Move> moves = gameState.getActualPlayersFigures().stream()
+                .filter(figure -> figure.getPossibleMoves().size() > 0)
+                .flatMap((figure -> figure.getPossibleMoves().stream()))
+                .collect(Collectors.toList());
+        Collections.shuffle(moves);
+
+        if(moves.stream().anyMatch(move -> move.isAttack())) {
+            return moves.stream().filter(move -> move.isAttack())
+                    .findAny().get();
         }
-        return null; //gdy nie znaleziono żadnego dozwolonego ruchu
+
+        return moves.get(0);
+       // return null; //gdy nie znaleziono żadnego dozwolonego ruchu
     }
 }

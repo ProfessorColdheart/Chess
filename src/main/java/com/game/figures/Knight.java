@@ -11,7 +11,7 @@ public class Knight extends Figure {
     }
 
     @Override
-    public List<Coord> getPossibleMoves() {
+    public List<Coord> getPossibleMoveCoords() {
         return finder.listLShapeMovements();
     }
 }

@@ -12,7 +12,7 @@ public class Pawn extends Figure {
     }
 
     @Override
-    public List<Coord> getPossibleMoves() {
+    public List<Coord> getPossibleMoveCoords() {
         List<Coord> resultList = new ArrayList<>(finder.listPawnMoves());
 
         return resultList;

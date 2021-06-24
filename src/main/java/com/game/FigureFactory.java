@@ -7,7 +7,6 @@ import java.util.List;
 
 public class FigureFactory {
 
-    //todo: utworzyć zmienne z dwoma kolorami (żeby można było zamienić je, jeśli gracz chce)
     private GameState gameState;
 
     public FigureFactory(GameState gameState) {
